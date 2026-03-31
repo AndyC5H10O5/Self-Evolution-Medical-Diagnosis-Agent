@@ -1,7 +1,8 @@
-# Consult_Medical_Agent
+# Self-Evolution: Medical Diagnosis Agent
 
-面向“医疗预问诊”的终端 Agent 项目，基于 DeepSeek Chat Completions API。  
-项目核心能力是 **Skills 混合检索**：先走硬编码关键词路由，未命中再走元数据语义检索（Top-1）。
+
+面向“医疗预问诊”的 Agent 项目。  
+项目核心能力是 **Skills 混合检索** 和 **Skills 自进化**。
 
 ## 当前已实现
 
@@ -9,11 +10,42 @@
 - 工具调用闭环（`tool_calls` -> 本地执行 -> `tool` 回传）
 - 本地文档保存（`save_document`）
 - Skills 混合检索：
-  - 硬编码关键词快速命中（低延迟）
-  - `skills/skills_meta.yaml` + `use_when` 语义回退命中
-- Skills 自进化（最小版）：
-  - 当前支持所有症状 skill（按各自 `evolvable_fields` 生效）
+  - **关键词匹配**：**高价值关键词**通过硬编码快速命中（低延迟）
+  - **语义检索**：硬编码未命中时，读取 `skills/skills_meta.yaml`，即模型通过自然语言处理查看 **Skills目录**
+- Skills 自进化：
+  - 支持所有症状 skill 的问诊流程**动态升级**（按各自 `evolvable_fields` 生效）
   - 未覆盖回答可自动追加到对应 `skills/<skill-name>/SKILL.md` 选项中（由 `agent_core/skill_evolve.py` 执行）
+
+
+
+## Skills 混合检索
+
+当前检索策略（Hybrid Retrieval）：
+
+1. **硬编码命中**：每个症状维护5个高价值关键词，作为字串尝试匹配用户输入（低延迟）。
+2. **语义检索**：硬编码未命中时，读取 `skills/skills_meta.yaml`，即模型按 自然语言查看 **Skills目录**
+
+
+
+每个症状在 `skills/skills_meta.yaml` 中均维护 `evolvable_fields`，用于限定该症状可进化的高价值问题集合。
+
+## Skills 自进化（全症状可用）
+
+目标：提升问诊选项覆盖率。  
+机制：检测 -> 判断 -> 追加 -> 立即生效。
+
+示例（`skills/headache/SKILL.md`）：
+
+- 原始：`头痛性质（搏动样/压迫样/刺痛）`
+- 患者回答：`头部沉重`
+- **进化后**：`头痛性质（搏动样/压迫样/刺痛/头部沉重）`
+
+说明：
+
+- 直接改写当前激活症状对应的 `skills/<skill-name>/SKILL.md`
+- 暂未实现版本控制与人工审核（MVP 约束）
+- 重复词条不会重复追加
+- 每次追加前会在终端显示输出 `skill_evolve_judge` 判定结果（是否追加、字段、候选项、原因）
 
 ## Skills 覆盖范围
 
@@ -42,41 +74,6 @@
 - `nausea`（恶心）
 
 每个症状在硬编码路由中维护 5 个高价值关键词。
-
-## Skills 混合检索
-
-在 `src/agent_core/skill_router.py` 维护：
-
-- `abdominal_pain`（肚子疼）
-- `headache`（头痛）
-- `nausea`（恶心）
-
-当前检索策略（Hybrid Retrieval）：
-
-1. **硬编码命中**：每个症状维护5个高价值关键词，作为字串尝试匹配用户输入（低延迟）。
-2. **语义检索**：硬编码未命中时，读取 `skills/skills_meta.yaml`，即模型按 自然语言查看 **Skills目录**
-
-
-
-每个症状在 `skills/skills_meta.yaml` 中均维护 `evolvable_fields`，用于限定该症状可进化的高价值问题集合。
-
-## Skills 自进化（全症状可用）
-
-目标：提升问诊选项覆盖率。  
-机制：检测 -> 判断 -> 追加 -> 立即生效。
-
-示例（`skills/headache/SKILL.md`）：
-
-- 原始：`头痛性质（搏动样/压迫样/刺痛）`
-- 患者回答：`头部沉重`
-- **进化后**：`头痛性质（搏动样/压迫样/刺痛/头部沉重）`
-
-说明：
-
-- 直接改写当前激活症状对应的 `skills/<skill-name>/SKILL.md`
-- 暂未实现版本控制与人工审核（MVP 约束）
-- 重复词条不会重复追加
-- 每次追加前会在终端显示输出 `skill_evolve_judge` 判定结果（是否追加、字段、候选项、原因）
 
 
 ## 已接入工具
