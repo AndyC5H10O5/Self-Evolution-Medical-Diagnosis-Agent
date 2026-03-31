@@ -11,7 +11,12 @@ if str(SRC_ROOT) not in sys.path:
 
 from config.settings import CHAT_COMPLETIONS_URL, DEEPSEEK_API_KEY, MODEL_ID
 from config.sys_prompts import SYSTEM_PROMPT
-from agent_core.skill_router import detect_skill_key, get_skill_label, load_skill_prompt
+from agent_core.skill_router import (
+    detect_skill_key,
+    get_evolvable_fields,
+    get_skill_label,
+    load_skill_prompt,
+)
 from tools import TOOL_HANDLERS, TOOLS
 from utils.console import DIM, RESET, YELLOW, colored_prompt, print_assistant, print_info
 
@@ -60,6 +65,119 @@ def process_tool_call(tool_name: str, tool_input: dict[str, Any]) -> str:
         return f"Error: {tool_name} failed: {exc}"
 
 
+def _extract_json_object(raw_text: str) -> dict[str, Any]:
+    text = (raw_text or "").strip()
+    if not text:
+        return {}
+
+    try:
+        data = json.loads(text)
+        if isinstance(data, dict):
+            return data
+    except Exception:
+        pass
+
+    start = text.find("{")
+    end = text.rfind("}")
+    if start < 0 or end <= start:
+        return {}
+
+    try:
+        data = json.loads(text[start:end + 1])
+    except Exception:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def _find_last_assistant_text(messages: list[dict[str, Any]]) -> str:
+    for message in reversed(messages):
+        if message.get("role") != "assistant":
+            continue
+        content = message.get("content")
+        if isinstance(content, str) and content.strip():
+            return content.strip()
+    return ""
+
+
+def detect_headache_option_evolution(
+    user_input: str,
+    last_assistant_text: str,
+    evolvable_fields: list[str],
+) -> dict[str, str] | None:
+    """
+    让模型判断当前用户回答是否应追加为头痛 skill 新选项.
+    """
+    if not user_input.strip() or not last_assistant_text.strip():
+        return None
+    if not evolvable_fields:
+        return None
+
+    judge_system_prompt = (
+        "你是一个问诊技能进化判断器。"
+        "请严格输出 JSON 对象，不要输出其他文本。"
+    )
+    judge_user_prompt = (
+        "任务：判断患者回答是否属于“已有字段的新选项”。\n"
+        f"可进化字段：{', '.join(evolvable_fields)}\n"
+        f"上一轮医生提问：{last_assistant_text}\n"
+        f"本轮患者回答：{user_input}\n\n"
+        "输出格式：\n"
+        "{\n"
+        '  "should_append": true/false,\n'
+        '  "field_label": "头痛性质 或 头痛部位 或 伴随症状 或 空字符串",\n'
+        '  "new_option": "候选词或短语，若不追加则空字符串"\n'
+        "}\n\n"
+        "规则：\n"
+        "1) 仅在患者回答是某个字段的具体表达且不明显属于闲聊时才 should_append=true。\n"
+        "2) new_option 必须是简短词组（2-12字），不能包含括号和斜杠。\n"
+        "3) 无法确定时返回 should_append=false。"
+    )
+
+    try:
+        response = httpx.post(
+            CHAT_COMPLETIONS_URL,
+            headers={
+                "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": MODEL_ID,
+                "messages": [
+                    {"role": "system", "content": judge_system_prompt},
+                    {"role": "user", "content": judge_user_prompt},
+                ],
+                "max_tokens": 256,
+            },
+            timeout=30.0,
+        )
+        response.raise_for_status()
+        data = response.json()
+    except Exception:
+        return None
+
+    choice = (data.get("choices") or [{}])[0]
+    content = ((choice.get("message") or {}).get("content") or "").strip()
+    result = _extract_json_object(content)
+
+    should_append = bool(result.get("should_append"))
+    field_label = str(result.get("field_label") or "").strip()
+    new_option = str(result.get("new_option") or "").strip()
+
+    if not should_append:
+        return None
+    if field_label not in evolvable_fields:
+        return None
+    if len(new_option) < 2 or len(new_option) > 12:
+        return None
+    if any(ch in new_option for ch in ("\n", "\r", "（", "）", "(", ")", "/")):
+        return None
+
+    return {
+        "field_label": field_label,
+        "new_option": new_option,
+    }
+
+
 def agent_loop() -> None:
     """主 agent 循环 -- 带工具调用的 REPL."""
 
@@ -105,6 +223,30 @@ def agent_loop() -> None:
                 active_skill_key = detected_skill
                 active_skill_prompt = skill_prompt
                 print_info(f"[skill_loaded] {get_skill_label(detected_skill)}")
+
+        # --- skills 自进化(最小版): 仅头痛场景追加新选项 ---
+        if active_skill_key == "headache":
+            evolvable_fields = get_evolvable_fields("headache")
+            last_assistant_text = _find_last_assistant_text(messages[:-1])
+            evolution = detect_headache_option_evolution(
+                user_input=user_input,
+                last_assistant_text=last_assistant_text,
+                evolvable_fields=evolvable_fields,
+            )
+            if evolution:
+                result = process_tool_call(
+                    "append_skill_option",
+                    {
+                        "skill_key": "headache",
+                        "field_label": evolution["field_label"],
+                        "new_option": evolution["new_option"],
+                    },
+                )
+                print_info(f"[skill_evolve] {result}")
+                if result.startswith("Successfully"):
+                    refreshed = load_skill_prompt("headache")
+                    if refreshed:
+                        active_skill_prompt = refreshed
 
         while True:
             # --- 调用 LLM ---

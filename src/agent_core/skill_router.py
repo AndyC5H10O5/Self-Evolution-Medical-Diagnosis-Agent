@@ -22,6 +22,7 @@ SKILL_ROUTES = {
     "headache": {
         "label": "头痛",
         "file": SKILLS_DIR / "headache.md",
+        "evolvable_fields": ["头痛部位", "头痛性质", "伴随症状"],
         "keywords": [
             "头痛",
             "头疼",
@@ -70,3 +71,13 @@ def load_skill_prompt(skill_key: str) -> str:
         return file_path.read_text(encoding="utf-8").strip()
     except Exception:
         return ""
+
+
+def get_evolvable_fields(skill_key: str) -> list[str]:
+    route = SKILL_ROUTES.get(skill_key)
+    if route is None:
+        return []
+    fields = route.get("evolvable_fields")
+    if not isinstance(fields, list):
+        return []
+    return [str(field) for field in fields]

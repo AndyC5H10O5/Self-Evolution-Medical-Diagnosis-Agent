@@ -2,4 +2,5 @@ __pycache__/
 *.pyc
 .cache/
 .cursor/
-.documents/
+documents/
+self_evolve/
