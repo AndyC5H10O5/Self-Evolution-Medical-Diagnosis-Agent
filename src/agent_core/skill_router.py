@@ -356,7 +356,14 @@ def detect_skill_key(user_text: str) -> str | None:
 def _get_route(skill_key: str) -> dict[str, Any] | None:
     route = SKILL_ROUTES.get(skill_key)
     if route is not None:
-        return route
+        merged = dict(route)
+        # 硬编码路由优先，但 evolvable_fields 允许从元数据补齐
+        if not isinstance(merged.get("evolvable_fields"), list):
+            for item in load_skills_metadata():
+                if item.get("skill_key") == skill_key:
+                    merged["evolvable_fields"] = item.get("evolvable_fields", [])
+                    break
+        return merged
 
     for item in load_skills_metadata():
         if item.get("skill_key") == skill_key:

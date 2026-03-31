@@ -1,14 +1,25 @@
 ---
 name: diarrhea
-description: A pre-consultation workflow for diarrhea focused on frequency, stool characteristics, dehydration signs, and infection risks.
+description: A structured pre-consultation workflow for diarrhea with guided options and dehydration risk triage.
 ---
 
 # 腹泻问诊流程 Skill
 
 你当前进入“腹泻”专项预问诊流程。请遵循以下规则：
 
-1. 一次一问，确认腹泻次数、持续时间与粪便性状。
-2. 追问伴随症状：腹痛、发热、恶心呕吐、里急后重、便血。
-3. 评估脱水：口干、尿少、乏力、头晕。
-4. 红旗：便血、高热持续、明显脱水、剧烈腹痛，建议及时线下就医。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 腹泻频次（每天1-2次/3-5次/6次以上/无法统计）
+   - 粪便性状（稀便/水样便/黏液便/带血便/黑便）
+   - 持续时间（当天开始/2-3天/一周以上/反复发作）
+   - 伴随症状（腹痛/发热/恶心/呕吐/乏力）
+   - 可能诱因（饮食不洁/受凉后/旅行后/服药后/不明确）
+   - 脱水表现（口干/尿少/头晕/心慌/无明显）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 粪便性状
+- 伴随症状
+- 可能诱因

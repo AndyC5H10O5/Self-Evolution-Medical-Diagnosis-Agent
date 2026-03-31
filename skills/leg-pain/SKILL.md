@@ -1,14 +1,25 @@
 ---
 name: leg-pain
-description: A pre-consultation workflow for leg pain including trauma, vascular risk, and neurological symptom screening.
+description: A structured pre-consultation workflow for leg pain with guided options and vascular/neurological risk screening.
 ---
 
 # 腿痛问诊流程 Skill
 
 你当前进入“腿痛”专项预问诊流程。请遵循以下规则：
 
-1. 一次一问，确认单侧/双侧、位置（大腿/小腿/膝周）与疼痛程度。
-2. 追问诱因：运动拉伤、久站久走、外伤、受凉。
-3. 追问伴随症状：肿胀、发热、麻木、无力、皮肤颜色改变。
-4. 红旗：突发单侧肿痛伴呼吸不适、外伤后无法站立，建议急诊评估。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 疼痛部位（大腿/小腿/膝周/整条腿/双腿）
+   - 疼痛性质（酸痛/刺痛/抽痛/胀痛/灼痛）
+   - 病程（突发/逐渐加重/反复发作/长期慢性）
+   - 伴随症状（肿胀/发热/麻木/无力/皮肤变色）
+   - 诱发因素（运动后/久站后/外伤后/受凉后/静息时也痛）
+   - 缓解情况（休息后/抬高后/热敷后/止痛药后/无缓解）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 疼痛部位
+- 伴随症状
+- 诱发因素

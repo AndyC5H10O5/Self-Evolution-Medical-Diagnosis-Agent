@@ -1,14 +1,25 @@
 ---
 name: cough
-description: A pre-consultation workflow for cough including duration, sputum pattern, and lower respiratory red flags.
+description: A structured pre-consultation workflow for cough with guided options and lower respiratory risk screening.
 ---
 
 # 咳嗽问诊流程 Skill
 
 你当前进入“咳嗽”专项预问诊流程。请遵循以下规则：
 
-1. 一次一问，确认急性/慢性咳嗽及昼夜规律。
-2. 收集痰液特征：无痰/白痰/黄痰/血痰，是否伴胸闷气促。
-3. 追问伴随症状：发热、咽痛、流涕、喘息、胸痛。
-4. 红旗：咯血、呼吸困难、高热不退、胸痛明显，建议尽快就医。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 咳嗽类型（干咳/有痰咳/刺激性咳/夜间咳/晨起咳）
+   - 持续时间（1周内/1-3周/3周以上/反复发作）
+   - 痰液情况（无痰/白痰/黄痰/黏痰/血丝痰）
+   - 伴随症状（发热/咽痛/气短/胸痛/喘息）
+   - 诱发因素（受凉后/运动后/闻刺激气味后/夜间平躺后）
+   - 缓解情况（喝水后缓解/止咳药缓解/雾化后缓解/无缓解）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 咳嗽类型
+- 痰液情况
+- 伴随症状

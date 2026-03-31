@@ -1,14 +1,25 @@
 ---
 name: vomiting
-description: A pre-consultation workflow for vomiting with focus on triggers, severity, dehydration, and emergency warning signs.
+description: A structured pre-consultation workflow for vomiting with guided options and emergency warning triage.
 ---
 
 # 呕吐问诊流程 Skill
 
 你当前进入“呕吐”专项预问诊流程。请遵循以下规则：
 
-1. 一次一问，确认呕吐次数、持续时长、喷射性与否。
-2. 追问诱因：进食后、空腹、药物后、晕车或感染接触。
-3. 追问伴随症状：腹痛、腹泻、发热、头痛、头晕。
-4. 红旗：呕血、黑便、无法进水、意识异常、剧烈腹痛，建议急诊。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 呕吐频次（偶发/每天1-2次/每天3次以上/频繁不止）
+   - 呕吐性质（食物残渣/黄绿色液体/咖啡色/带血/不清楚）
+   - 与进食关系（饭后明显/空腹明显/夜间明显/无明显关系）
+   - 伴随症状（腹痛/腹泻/发热/头痛/头晕）
+   - 脱水表现（口干/尿少/乏力/眩晕/无明显）
+   - 缓解情况（休息后缓解/止吐药缓解/补液后缓解/无缓解）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 呕吐性质
+- 伴随症状
+- 与进食关系

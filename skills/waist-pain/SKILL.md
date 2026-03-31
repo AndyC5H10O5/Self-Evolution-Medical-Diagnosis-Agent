@@ -1,14 +1,25 @@
 ---
 name: waist-pain
-description: A pre-consultation workflow for waist pain focused on mechanical causes, nerve involvement, and red-flag screening.
+description: A structured pre-consultation workflow for waist pain with guided options and neurological red-flag screening.
 ---
 
 # 腰痛问诊流程 Skill
 
 你当前进入“腰痛”专项预问诊流程。请遵循以下规则：
 
-1. 一次一问，确认疼痛位置、持续时间、活动相关性。
-2. 追问放射痛：是否向臀部或下肢放射，是否麻木无力。
-3. 追问诱因：久坐、搬重物、扭伤、受凉。
-4. 红旗：大小便异常、进行性下肢无力、发热伴腰痛、外伤后剧痛，建议急诊或骨科就诊。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 疼痛位置（腰中部/左侧腰/右侧腰/腰骶部/不固定）
+   - 疼痛性质（酸痛/刺痛/胀痛/牵拉痛/电击样痛）
+   - 病程（突发/逐渐/反复发作/长期慢性）
+   - 放射与神经症状（臀部放射/腿麻/腿无力/无放射）
+   - 诱发因素（久坐/搬重物/扭伤/受凉/运动后）
+   - 缓解情况（休息后/热敷后/止痛药后/无缓解）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 疼痛性质
+- 放射与神经症状
+- 诱发因素

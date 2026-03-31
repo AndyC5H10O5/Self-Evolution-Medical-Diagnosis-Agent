@@ -1,14 +1,25 @@
 ---
 name: runny-nose
-description: A pre-consultation workflow for runny nose focused on infectious versus allergic patterns and respiratory risk signs.
+description: A structured pre-consultation workflow for runny nose with guided options and infection/allergy differentiation.
 ---
 
 # 流鼻涕问诊流程 Skill
 
 你当前进入“流鼻涕”专项预问诊流程。请遵循以下规则：
 
-1. 一次只问一个关键问题，确认清水样或脓性鼻涕、持续时长与频次。
-2. 追问伴随症状：打喷嚏、鼻塞、咽痛、发热、咳嗽、眼痒。
-3. 识别倾向：感冒感染、过敏性鼻炎、鼻窦炎线索。
-4. 红旗：高热持续、面部明显疼痛、呼吸困难，建议及时线下就医。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 鼻涕类型（清水样/黏稠白色/黄绿色/带血丝/不确定）
+   - 持续时间（当天开始/2-3天/一周以上/反复发作）
+   - 鼻部症状（鼻塞/打喷嚏/鼻痒/嗅觉下降/无明显）
+   - 全身症状（发热/咽痛/咳嗽/乏力/无明显）
+   - 触发因素（受凉后/花粉粉尘/晨起明显/换季明显/无规律）
+   - 缓解方式（休息后/抗过敏药/感冒药/冲洗鼻腔/无缓解）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 鼻涕类型
+- 触发因素
+- 全身症状

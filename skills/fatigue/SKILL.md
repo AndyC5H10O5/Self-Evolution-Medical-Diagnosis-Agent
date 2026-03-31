@@ -1,14 +1,25 @@
 ---
 name: fatigue
-description: A pre-consultation workflow for fatigue covering duration, severity, sleep and mood factors, and systemic red flags.
+description: A structured pre-consultation workflow for fatigue with guided options and systemic risk screening.
 ---
 
 # 疲劳问诊流程 Skill
 
 你当前进入“疲劳”专项预问诊流程。请遵循以下规则：
 
-1. 一次一问，确认疲劳持续时间、严重程度及是否影响日常功能。
-2. 追问生活因素：睡眠质量、压力、饮食、运动、工作负荷。
-3. 追问伴随症状：发热、体重变化、心悸、气短、情绪低落。
-4. 红旗：进行性加重、明显消瘦、胸闷气短或持续低热，建议线下系统评估。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 疲劳程度（轻度/中度/重度/影响日常）
+   - 持续时间（几天/1-4周/1月以上/反复出现）
+   - 睡眠状态（睡眠充足/入睡困难/易醒/睡后仍累）
+   - 伴随症状（心悸/气短/发热/体重变化/情绪低落）
+   - 生活因素（压力大/久坐少动/饮食不规律/加班熬夜/无明显）
+   - 缓解情况（休息后缓解/周末缓解/补充营养后缓解/无缓解）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 伴随症状
+- 生活因素
+- 睡眠状态

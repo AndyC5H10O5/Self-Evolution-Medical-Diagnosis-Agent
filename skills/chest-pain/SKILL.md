@@ -1,14 +1,25 @@
 ---
 name: chest-pain
-description: A pre-consultation workflow for chest pain emphasizing high-risk cardiovascular and pulmonary triage.
+description: A structured pre-consultation workflow for chest pain with guided options and urgent triage emphasis.
 ---
 
 # 胸痛问诊流程 Skill
 
 你当前进入“胸痛”专项预问诊流程。请遵循以下规则：
 
-1. 一次一问，优先确认部位、性质（压榨/刺痛/闷痛）、持续时间与诱因。
-2. 追问伴随症状：气短、出汗、恶心、放射痛（肩背/左臂/下颌）。
-3. 追问风险因素：高血压、糖尿病、吸烟、心血管病史。
-4. 红旗：持续胸痛>15分钟、呼吸困难、濒死感、晕厥，立即建议急诊。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 疼痛位置（左胸/右胸/胸骨后/全胸/不固定）
+   - 疼痛性质（压榨痛/刺痛/闷痛/烧灼痛/牵拉痛）
+   - 持续时间（几秒/几分钟/15分钟以上/反复发作）
+   - 伴随症状（气短/出汗/恶心/心悸/放射痛）
+   - 诱发因素（活动后/情绪激动/深呼吸时/进食后/静息也痛）
+   - 缓解方式（休息后缓解/含服药缓解/体位变化缓解/无缓解）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 疼痛性质
+- 伴随症状
+- 诱发因素

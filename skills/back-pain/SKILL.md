@@ -1,14 +1,25 @@
 ---
 name: back-pain
-description: A pre-consultation workflow for back pain with posture, strain, and neurological risk assessment.
+description: A structured pre-consultation workflow for back pain with guided options and posture/trauma risk screening.
 ---
 
 # 背痛问诊流程 Skill
 
 你当前进入“背痛”专项预问诊流程。请遵循以下规则：
 
-1. 一次一问，确认上背/中背/下背位置与疼痛性质。
-2. 追问诱因：久坐姿势不良、运动拉伤、外伤、负重。
-3. 追问伴随症状：发热、胸闷、呼吸痛、肢体麻木无力。
-4. 红旗：外伤后持续加重、发热伴背痛、神经功能异常，建议及时就医。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 疼痛部位（上背/中背/下背/肩胛区/全背）
+   - 疼痛性质（酸痛/刺痛/紧绷痛/牵拉痛/烧灼痛）
+   - 持续时间（当天开始/几天/几周/反复发作）
+   - 伴随症状（活动受限/麻木/乏力/发热/呼吸痛）
+   - 诱发因素（久坐姿势不良/运动拉伤/外伤后/受凉后）
+   - 缓解情况（休息后/热敷后/按摩后/无明显缓解）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 疼痛部位
+- 疼痛性质
+- 诱发因素

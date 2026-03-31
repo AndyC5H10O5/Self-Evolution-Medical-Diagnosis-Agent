@@ -1,14 +1,25 @@
 ---
 name: eye-pain
-description: A pre-consultation workflow for eye pain including visual symptoms, trauma history, and ophthalmic red-flag triage.
+description: A structured pre-consultation workflow for eye pain with guided options and visual red-flag triage.
 ---
 
 # 眼痛问诊流程 Skill
 
 你当前进入“眼痛”专项预问诊流程。请遵循以下规则：
 
-1. 一次一问，优先确认单眼/双眼、疼痛程度与持续时间。
-2. 重点收集：畏光、流泪、视力下降、眼红、分泌物、异物感。
-3. 追问风险史：隐形眼镜佩戴、外伤、化学刺激、长时间用眼。
-4. 红旗：突发视力明显下降、剧烈眼痛伴头痛呕吐、外伤后视物异常，建议急诊眼科。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 疼痛部位（左眼/右眼/双眼/眼眶周围）
+   - 疼痛性质（刺痛/胀痛/灼痛/异物感/酸痛）
+   - 起病时间（突发/逐渐/间歇反复/持续加重）
+   - 伴随症状（眼红/畏光/流泪/视力模糊/分泌物）
+   - 相关风险（隐形眼镜/外伤/化学刺激/长时间用眼/无/眼睛被书角砸到）
+   - 缓解情况（休息后缓解/滴眼液缓解/遮光后缓解/无缓解）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 疼痛性质
+- 伴随症状
+- 相关风险

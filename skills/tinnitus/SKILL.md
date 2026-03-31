@@ -1,14 +1,25 @@
 ---
 name: tinnitus
-description: A pre-consultation workflow for tinnitus focused on onset pattern, laterality, hearing changes, and urgent warning signs.
+description: A structured pre-consultation workflow for tinnitus with guided options and hearing risk triage.
 ---
 
 # 耳鸣问诊流程 Skill
 
 你当前进入“耳鸣”专项预问诊流程。请遵循以下规则：
 
-1. 一次仅提一个问题，优先确认单侧/双侧、持续/间歇、嗡鸣特征。
-2. 追问伴随症状：听力下降、眩晕、耳痛、耳闷、近期噪声暴露。
-3. 追问诱因：感冒后、情绪压力、睡眠不足、药物使用。
-4. 红旗：突发单侧听力下降、剧烈眩晕、神经症状，建议急诊或耳鼻喉专科。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 耳鸣侧别（左侧/右侧/双侧/不确定）
+   - 耳鸣性质（嗡嗡声/蝉鸣声/电流声/脉搏样/间断响）
+   - 持续时间（突发/几天内/数周/长期反复）
+   - 伴随症状（听力下降/眩晕/耳闷/耳痛/头痛）
+   - 诱发场景（噪声后/熬夜后/情绪紧张后/感冒后/无明显诱因）
+   - 对生活影响（轻微/影响睡眠/影响工作/焦虑明显）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 耳鸣性质
+- 伴随症状
+- 诱发场景

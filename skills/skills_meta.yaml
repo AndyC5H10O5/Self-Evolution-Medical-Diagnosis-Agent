@@ -5,7 +5,10 @@ skills:
     path: skills/abdominal-pain/SKILL.md
     use_when: >
       当患者描述肚子痛、腹部绞痛、胃部疼痛，或伴随消化道不适时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 疼痛部位
+      - 疼痛性质
+      - 伴随症状
 
   - skill_key: headache
     name: headache
@@ -24,7 +27,10 @@ skills:
     path: skills/nausea/SKILL.md
     use_when: >
       当患者主诉恶心、反胃、干呕，或出现想吐、进食后不适等上消化道不适时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 是否呕吐
+      - 伴随症状
+      - 近期诱因
 
   - skill_key: insomnia
     name: insomnia
@@ -32,7 +38,10 @@ skills:
     path: skills/insomnia/SKILL.md
     use_when: >
       当患者描述难以入睡、频繁夜醒、早醒或睡眠质量差时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 睡眠问题类型
+      - 白天影响
+      - 可能诱因
 
   - skill_key: tinnitus
     name: tinnitus
@@ -40,7 +49,10 @@ skills:
     path: skills/tinnitus/SKILL.md
     use_when: >
       当患者描述耳朵嗡鸣、耳内响声、耳鸣伴听力变化时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 耳鸣性质
+      - 伴随症状
+      - 诱发场景
 
   - skill_key: eye_pain
     name: eye-pain
@@ -48,7 +60,10 @@ skills:
     path: skills/eye-pain/SKILL.md
     use_when: >
       当患者主诉眼部疼痛、眼球刺痛、眼红畏光或视力不适时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 疼痛性质
+      - 伴随症状
+      - 相关风险
 
   - skill_key: runny_nose
     name: runny-nose
@@ -56,7 +71,10 @@ skills:
     path: skills/runny-nose/SKILL.md
     use_when: >
       当患者主诉流鼻涕、鼻塞、打喷嚏，需区分感染与过敏时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 鼻涕类型
+      - 触发因素
+      - 全身症状
 
   - skill_key: chest_pain
     name: chest-pain
@@ -64,7 +82,10 @@ skills:
     path: skills/chest-pain/SKILL.md
     use_when: >
       当患者描述胸口疼痛、胸闷痛、压榨样不适，需排查急症风险时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 疼痛性质
+      - 伴随症状
+      - 诱发因素
 
   - skill_key: heart_pain
     name: heart-pain
@@ -72,7 +93,10 @@ skills:
     path: skills/heart-pain/SKILL.md
     use_when: >
       当患者描述心前区疼痛、心口发紧或疑似心脏相关不适时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 疼痛性质
+      - 伴随症状
+      - 发作场景
 
   - skill_key: sore_throat
     name: sore-throat
@@ -80,7 +104,10 @@ skills:
     path: skills/sore-throat/SKILL.md
     use_when: >
       当患者出现咽痛、吞咽痛、嗓子痛等上呼吸道不适时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 疼痛部位
+      - 伴随症状
+      - 诱发因素
 
   - skill_key: cough
     name: cough
@@ -88,7 +115,10 @@ skills:
     path: skills/cough/SKILL.md
     use_when: >
       当患者持续咳嗽、干咳或咳痰，需要评估呼吸道症状时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 咳嗽类型
+      - 痰液情况
+      - 伴随症状
 
   - skill_key: diarrhea
     name: diarrhea
@@ -96,7 +126,10 @@ skills:
     path: skills/diarrhea/SKILL.md
     use_when: >
       当患者主诉腹泻、拉肚子、大便稀水样并需评估脱水风险时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 粪便性状
+      - 伴随症状
+      - 可能诱因
 
   - skill_key: vomiting
     name: vomiting
@@ -104,7 +137,10 @@ skills:
     path: skills/vomiting/SKILL.md
     use_when: >
       当患者主诉反复呕吐、干呕、进食后呕吐或无法进食饮水时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 呕吐性质
+      - 伴随症状
+      - 与进食关系
 
   - skill_key: joint_pain
     name: joint-pain
@@ -112,7 +148,10 @@ skills:
     path: skills/joint-pain/SKILL.md
     use_when: >
       当患者主诉膝、肘、手指等关节疼痛，伴肿胀或活动受限时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 疼痛关节
+      - 疼痛性质
+      - 伴随表现
 
   - skill_key: waist_pain
     name: waist-pain
@@ -120,7 +159,10 @@ skills:
     path: skills/waist-pain/SKILL.md
     use_when: >
       当患者主诉腰部疼痛、弯腰加重、久坐后酸痛或下肢放射痛时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 疼痛性质
+      - 放射与神经症状
+      - 诱发因素
 
   - skill_key: back_pain
     name: back-pain
@@ -128,7 +170,10 @@ skills:
     path: skills/back-pain/SKILL.md
     use_when: >
       当患者主诉后背或背部疼痛、肌肉紧张、活动受限时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 疼痛部位
+      - 疼痛性质
+      - 诱发因素
 
   - skill_key: leg_pain
     name: leg-pain
@@ -136,7 +181,10 @@ skills:
     path: skills/leg-pain/SKILL.md
     use_when: >
       当患者主诉单侧或双侧腿痛、酸痛、肿痛或走路受限时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 疼痛部位
+      - 伴随症状
+      - 诱发因素
 
   - skill_key: fever
     name: fever
@@ -144,7 +192,10 @@ skills:
     path: skills/fever/SKILL.md
     use_when: >
       当患者主诉发热、体温升高、反复发烧并伴感染症状时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 体温范围
+      - 伴随症状
+      - 暴露风险
 
   - skill_key: fatigue
     name: fatigue
@@ -152,7 +203,10 @@ skills:
     path: skills/fatigue/SKILL.md
     use_when: >
       当患者长期乏力、精力下降、疲惫影响日常状态时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 伴随症状
+      - 生活因素
+      - 睡眠状态
 
   - skill_key: acne
     name: acne
@@ -160,7 +214,10 @@ skills:
     path: skills/acne/SKILL.md
     use_when: >
       当患者主诉长痘、粉刺、炎性丘疹脓疱反复发作时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 皮损类型
+      - 诱发因素
+      - 伴随问题
 
   - skill_key: weight_gain
     name: weight-gain
@@ -168,4 +225,7 @@ skills:
     path: skills/weight-gain/SKILL.md
     use_when: >
       当患者在短期或持续阶段出现体重上升、增重明显并关注代谢问题时使用。
-    evolvable_fields: []
+    evolvable_fields:
+      - 生活变化
+      - 伴随症状
+      - 可能诱因

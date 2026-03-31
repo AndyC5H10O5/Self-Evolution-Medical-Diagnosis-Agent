@@ -1,14 +1,25 @@
 ---
 name: acne
-description: A pre-consultation workflow for acne focusing on lesion pattern, triggers, skincare habits, and severity grading.
+description: A structured pre-consultation workflow for acne with guided options and severity screening.
 ---
 
 # 痤疮问诊流程 Skill
 
 你当前进入“痤疮”专项预问诊流程。请遵循以下规则：
 
-1. 一次一问，确认部位（面部/背部/胸部）、病程和反复情况。
-2. 追问皮损类型：粉刺、丘疹、脓疱、结节，是否有瘢痕。
-3. 追问诱因：熬夜、压力、饮食、月经周期、护肤和化妆习惯。
-4. 红旗：结节囊肿明显、瘢痕加重、心理困扰严重，建议皮肤科就诊。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 发生部位（额头/面颊/下巴/胸背部/多部位）
+   - 皮损类型（粉刺/丘疹/脓疱/结节/混合型）
+   - 病程（近期爆发/反复多年/周期性加重/持续不退）
+   - 诱发因素（熬夜/压力大/饮食油辣/经期相关/护肤不当）
+   - 伴随问题（疼痛/瘙痒/色沉/瘢痕/无明显）
+   - 处理方式（未处理/自行外用药/口服药/医美治疗/效果差）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 皮损类型
+- 诱发因素
+- 伴随问题

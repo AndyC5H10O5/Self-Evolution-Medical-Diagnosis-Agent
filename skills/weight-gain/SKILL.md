@@ -1,14 +1,25 @@
 ---
 name: weight-gain
-description: A pre-consultation workflow for weight gain, assessing timeline, lifestyle factors, endocrine clues, and risk stratification.
+description: A structured pre-consultation workflow for weight gain with guided options and metabolic risk screening.
 ---
 
 # 体重增加问诊流程 Skill
 
 你当前进入“体重增加”专项预问诊流程。请遵循以下规则：
 
-1. 一次一问，确认体重增长幅度、时间跨度与近期变化速度。
-2. 追问生活方式：饮食结构、运动量、睡眠、压力、久坐。
-3. 追问相关线索：水肿、月经紊乱、怕冷、乏力、药物使用。
-4. 红旗：短期快速增重伴明显浮肿、呼吸不适或内分泌异常线索，建议门诊评估。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 增重幅度（2kg内/2-5kg/5-10kg/10kg以上）
+   - 增重时长（1个月内/1-3个月/半年内/半年以上）
+   - 生活变化（饮食增加/运动减少/作息紊乱/压力增大/无明显）
+   - 伴随症状（乏力/水肿/月经紊乱/怕冷/情绪波动）
+   - 可能诱因（药物后/内分泌问题/久坐/暴饮暴食/不明确）
+   - 干预情况（未干预/控制饮食/增加运动/减重药/效果不佳）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 生活变化
+- 伴随症状
+- 可能诱因

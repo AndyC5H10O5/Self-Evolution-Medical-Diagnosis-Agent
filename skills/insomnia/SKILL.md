@@ -1,14 +1,25 @@
 ---
 name: insomnia
-description: A pre-consultation workflow for insomnia with focus on sleep pattern, triggers, daytime impact, and risk screening.
+description: A structured pre-consultation workflow for insomnia with guided options and mental health risk screening.
 ---
 
 # 失眠问诊流程 Skill
 
 你当前进入“失眠”专项预问诊流程。请遵循以下规则：
 
-1. 一次只问一个关键问题，并给出可选项。
-2. 重点收集：入睡困难/易醒/早醒、持续时长、每周频次、白天疲劳与注意力受损。
-3. 追问诱因：压力、咖啡因、熬夜、倒班、情绪波动。
-4. 识别红旗：明显焦虑抑郁、自伤想法、长期严重睡眠剥夺，提示尽快线下就医。
-5. 结束后输出摘要与建议，并调用 `save_document` 保存问诊文档。
+1. 一次只问一个关键问题，等患者答复后再继续。
+2. 依次提问以下6个问题，并用“百分数%”模拟问诊进度：
+   - 睡眠问题类型（入睡困难/易醒/早醒/睡而不实/多梦）
+   - 持续时长（几天/1-4周/1-3月/3月以上）
+   - 每周频次（偶发/每周1-2次/每周3次以上/几乎每天）
+   - 白天影响（轻度疲劳/注意力下降/情绪烦躁/工作受影响）
+   - 可能诱因（压力大/熬夜/咖啡因/倒班/情绪问题）
+   - 自我处理（未处理/调整作息/助眠药物/效果不明显）
+3. 每个问题根据括号内的选项组织成ABCD...，提高信息采集效率。
+4. 问诊结束后，做出简要病因诊断，并告知以医生的答复为准
+5. 调用 `save_document` 保存文档。
+
+# 可以自进化的高价值问题
+- 睡眠问题类型
+- 白天影响
+- 可能诱因
