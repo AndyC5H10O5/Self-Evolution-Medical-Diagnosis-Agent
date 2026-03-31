@@ -12,8 +12,8 @@
   - 硬编码关键词快速命中（低延迟）
   - `skills/skills_meta.yaml` + `use_when` 语义回退命中
 - Skills 自进化（最小版）：
-  - 当前仅 `headache` 支持
-  - 未覆盖回答可追加到 `skills/headache/SKILL.md` 选项中（`append_skill_option`）
+  - 当前支持所有症状 skill（按各自 `evolvable_fields` 生效）
+  - 未覆盖回答可自动追加到对应 `skills/<skill-name>/SKILL.md` 选项中（由 `agent_core/skill_evolve.py` 执行）
 
 ## Skills 覆盖范围
 
@@ -58,13 +58,9 @@
 
 
 
-其中 `headache` 增加了 `evolvable_fields`：
+每个症状在 `skills/skills_meta.yaml` 中均维护 `evolvable_fields`，用于限定该症状可进化的高价值问题集合。
 
-- `头痛部位`
-- `头痛性质`
-- `伴随症状`
-
-## Skills 自进化（最小可实现）
+## Skills 自进化（全症状可用）
 
 目标：提升问诊选项覆盖率。  
 机制：检测 -> 判断 -> 追加 -> 立即生效。
@@ -77,9 +73,10 @@
 
 说明：
 
-- 直接改写 `skills/headache/SKILL.md`
+- 直接改写当前激活症状对应的 `skills/<skill-name>/SKILL.md`
 - 暂未实现版本控制与人工审核（MVP 约束）
 - 重复词条不会重复追加
+- 每次追加前会在终端显示输出 `skill_evolve_judge` 判定结果（是否追加、字段、候选项、原因）
 
 
 ## 已接入工具
@@ -89,10 +86,8 @@
 - `save_document`
   - 保存诊断/问诊文档到本地
   - 支持自动文件名或指定 `file_path`
-- `append_skill_option`（核心）
-  - 将新选项追加进 skill 的目标字段
-  - 当前仅支持 `skill_key=headache`
-  - 内置输入校验与去重检测
+
+自进化相关能力由 `src/agent_core/skill_evolve.py` 内部实现（识别新选项 + 追加写回），不再通过独立工具注册暴露。
 
 ## 快速开始
 
@@ -139,11 +134,12 @@ Consult_Medical_Agent/
 ├─ src/
 │  ├─ agent_core/
 │  │  ├─ main.py                 # 主循环：Agent loop、tool call、自进化
-│  │  └─ skill_router.py         # 症状识别与 skills 路由
+│  │  ├─ skill_router.py         # 症状识别与 skills 路由
+│  │  ├─ skill_router_NLP.py     # 元数据语义回退路由
+│  │  └─ skill_evolve.py         # 全症状自进化模块（识别+追加）
 │  ├─ tools/
 │  │  ├─ __init__.py             # 工具注册表
-│  │  ├─ save_document.py        # 保存问诊文档
-│  │  └─ append_skill_option.py  # 追加 skill 选项（最小版）
+│  │  └─ save_document.py        # 保存问诊文档
 │  ├─ config/
 │  │  ├─ settings.py             # .env 配置加载
 │  │  └─ sys_prompts.py          # 系统提示词
