@@ -1,35 +1,47 @@
 # Consult_Medical_Agent
 
-面向“医疗预问诊”的 Agent 项目，通过 **Skills** 模拟医生的问诊场景。  
-当前版本已支持：
+面向“医疗预问诊”的终端 Agent 项目，基于 DeepSeek Chat Completions API。  
+项目核心能力是 **Skills 混合检索**：先走硬编码关键词路由，未命中再走元数据语义检索（Top-1）。
 
-- 多轮问诊对话循环（REPL）
-- 症状路由加载对应问诊 skill（肚子疼/头痛/恶心）
-- **混合检索命中 skills（核心）**：硬编码关键词优先，未命中时走 `skills_meta.yaml` + 模型语义 Top-1 回退
-- 保存问诊书
-- **skills 自进化（最小版）**：在头痛场景中，将患者新表述自动追加到 `skills/headache/SKILL.md` 的问题选项中
+## 当前已实现
 
-## 功能概览
+- 多轮对话问诊（REPL）
+- 工具调用闭环（`tool_calls` -> 本地执行 -> `tool` 回传）
+- 本地文档保存（`save_document`）
+- Skills 混合检索：
+  - 硬编码关键词快速命中（低延迟）
+  - `skills/skills_meta.yaml` + `use_when` 语义回退命中
+- Skills 自进化（最小版）：
+  - 当前仅 `headache` 支持
+  - 未覆盖回答可追加到 `skills/headache/SKILL.md` 选项中（`append_skill_option`）
 
-- **对话引导**：一次一问，收集关键信息
-- **症状路由**：根据用户**病症描述**自动加载对应**问诊skill** 提示
-- **本地落盘**：问诊结束可调用工具保存“问诊书”到 `documents/`
-- **动态进化（核心）**：
-  - 当前仅对 `headache` skill 生效
-  - 自动识别患者“未覆盖选项”的回答
-  - 调用**工具**将新选项追加到已有选项列表
+## Skills 覆盖范围
 
-## 核心流程
+当前共维护 21 个症状 skill：
 
-`src/agent_core/main.py` 的运行链路：
+- `headache`（头痛）
+- `insomnia`（失眠）
+- `tinnitus`（耳鸣）
+- `eye_pain`（眼痛）
+- `runny_nose`（流鼻涕）
+- `chest_pain`（胸痛）
+- `heart_pain`（心痛）
+- `sore_throat`（喉咙痛）
+- `cough`（咳嗽）
+- `abdominal_pain`（肚子痛）
+- `diarrhea`（腹泻）
+- `vomiting`（呕吐）
+- `joint_pain`（关节痛）
+- `waist_pain`（腰痛）
+- `back_pain`（背痛）
+- `leg_pain`（腿痛）
+- `fever`（发烧）
+- `fatigue`（疲劳）
+- `acne`（痤疮）
+- `weight_gain`（体重增加）
+- `nausea`（恶心）
 
-1. 读取用户输入并维护消息历史  
-2. 症状路由：先硬编码命中，再元数据语义回退（`skill_router.py`）  
-3. 加载命中 skill 的 `SKILL.md` 作为专项提示  
-4. 在头痛场景执行最小自进化检测（判断是否出现可追加新选项）  
-5. 若模型返回 `tool_calls`，执行本地工具并将结果回传模型  
-6. 输出最终问诊回复  
-
+每个症状在硬编码路由中维护 5 个高价值关键词。
 
 ## Skills 混合检索
 
@@ -41,7 +53,7 @@
 
 当前检索策略（Hybrid Retrieval）：
 
-1. **硬编码命中**：每个症状维护5-6个高价值关键词，作为字串尝试匹配用户输入（低延迟）。
+1. **硬编码命中**：每个症状维护5个高价值关键词，作为字串尝试匹配用户输入（低延迟）。
 2. **语义检索**：硬编码未命中时，读取 `skills/skills_meta.yaml`，即模型按 自然语言查看 **Skills目录**
 
 
@@ -84,18 +96,13 @@
 
 ## 快速开始
 
-### 1) 环境准备
-
-- Python 3.10+（建议）
-- 安装依赖：
+### 1) 安装依赖
 
 ```bash
 pip install -r requirements.txt
 ```
 
 ### 2) 配置 `.env`
-
-在项目根目录创建 `.env`：
 
 ```env
 DEEPSEEK_API_KEY=sk-xxxxxxxx
@@ -105,7 +112,7 @@ DEEPSEEK_BASE_URL=https://api.deepseek.com
 
 ### 3) 启动
 
-PowerShell（推荐）：
+PowerShell：
 
 ```bash
 powershell -ExecutionPolicy Bypass -File scripts/run_main.ps1
@@ -117,25 +124,13 @@ CMD：
 scripts\run_main.bat
 ```
 
-也可直接运行：
+或直接：
 
 ```bash
 python src/agent_core/main.py
 ```
 
-退出命令：`quit` / `exit` / `Ctrl+C`
-
-## 当前边界
-
-- 自进化目前只覆盖 `headache`，尚未扩展到其他 skill
-- 仍以文本问诊为主，未引入结构化病历 schema
-- 未加入自动测试与 CI 流程
-
-## 改进方向
-
-1. 把 `append_skill_option` 扩展到 `abdominal_pain` 和 `nausea`  
-2. 增加“候选池 + 人审确认”再落盘机制（降低误追加风险）  
-3. 增加单元测试（工具层、路由层、自进化判定层）  
+退出：`quit` / `exit` / `Ctrl+C`
 
 ## 项目结构
 
@@ -155,13 +150,8 @@ Consult_Medical_Agent/
 │  └─ utils/
 │     └─ console.py              # 终端输出样式
 ├─ skills/
-│  ├─ skills_meta.yaml           # skills 元数据（目录）
-│  ├─ abdominal-pain/
-│  │  └─ SKILL.md
-│  ├─ headache/
-│  │  └─ SKILL.md                # 头痛问诊流程（支持自进化）
-│  └─ nausea/
-│     └─ SKILL.md
+│  ├─ skills_meta.yaml           # 问诊结果保存目录
+│  └─ <skill-name>/SKILL.md      # 问诊流程（支持自进化）
 ├─ documents/                    # 问诊结果保存目录
 ├─ scripts/
 │  ├─ run_main.ps1               # 统一启动入口

@@ -5,6 +5,9 @@ from typing import Any
 
 import yaml
 
+from utils.console import print_info
+
+
 # .../Consult_Medical_Agent
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 SKILLS_DIR = PROJECT_ROOT / "skills"
@@ -14,15 +17,14 @@ _SKILLS_METADATA_CACHE: list[dict[str, Any]] | None = None
 
 SKILL_ROUTES = {
     "abdominal_pain": {
-        "label": "肚子疼",
+        "label": "肚子痛",
         "file": SKILLS_DIR / "abdominal-pain" / "SKILL.md",
         "keywords": [
-            "肚子疼",
-            "腹痛",
             "肚子痛",
+            "腹痛",
             "胃疼",
             "胃痛",
-            "肚子不舒服",
+            "肚子绞痛",
         ],
     },
     "headache": {
@@ -44,8 +46,206 @@ SKILL_ROUTES = {
             "恶心",
             "想吐",
             "反胃",
-            "呕吐",
             "干呕",
+            "胃里翻腾",
+        ],
+    },
+    "insomnia": {
+        "label": "失眠",
+        "file": SKILLS_DIR / "insomnia" / "SKILL.md",
+        "keywords": [
+            "失眠",
+            "睡不着",
+            "入睡困难",
+            "总醒",
+            "早醒",
+        ],
+    },
+    "tinnitus": {
+        "label": "耳鸣",
+        "file": SKILLS_DIR / "tinnitus" / "SKILL.md",
+        "keywords": [
+            "耳鸣",
+            "耳朵嗡嗡",
+            "耳朵响",
+            "听到鸣响",
+            "耳内噪音",
+        ],
+    },
+    "eye_pain": {
+        "label": "眼痛",
+        "file": SKILLS_DIR / "eye-pain" / "SKILL.md",
+        "keywords": [
+            "眼痛",
+            "眼睛疼",
+            "眼睛刺痛",
+            "眼球痛",
+            "眼眶痛",
+        ],
+    },
+    "runny_nose": {
+        "label": "流鼻涕",
+        "file": SKILLS_DIR / "runny-nose" / "SKILL.md",
+        "keywords": [
+            "流鼻涕",
+            "鼻涕多",
+            "鼻子老流水",
+            "清鼻涕",
+            "鼻塞流涕",
+        ],
+    },
+    "chest_pain": {
+        "label": "胸痛",
+        "file": SKILLS_DIR / "chest-pain" / "SKILL.md",
+        "keywords": [
+            "胸痛",
+            "胸口痛",
+            "胸闷痛",
+            "胸口压痛",
+            "胸前区疼",
+        ],
+    },
+    "heart_pain": {
+        "label": "心痛",
+        "file": SKILLS_DIR / "heart-pain" / "SKILL.md",
+        "keywords": [
+            "心痛",
+            "心口痛",
+            "心前区痛",
+            "心脏疼",
+            "心口发紧",
+        ],
+    },
+    "sore_throat": {
+        "label": "喉咙痛",
+        "file": SKILLS_DIR / "sore-throat" / "SKILL.md",
+        "keywords": [
+            "喉咙痛",
+            "嗓子痛",
+            "咽痛",
+            "吞咽痛",
+            "咽喉疼",
+        ],
+    },
+    "cough": {
+        "label": "咳嗽",
+        "file": SKILLS_DIR / "cough" / "SKILL.md",
+        "keywords": [
+            "咳嗽",
+            "一直咳",
+            "干咳",
+            "咳痰",
+            "夜咳",
+        ],
+    },
+    "diarrhea": {
+        "label": "腹泻",
+        "file": SKILLS_DIR / "diarrhea" / "SKILL.md",
+        "keywords": [
+            "腹泻",
+            "拉肚子",
+            "大便稀",
+            "水样便",
+            "一天拉很多次",
+        ],
+    },
+    "vomiting": {
+        "label": "呕吐",
+        "file": SKILLS_DIR / "vomiting" / "SKILL.md",
+        "keywords": [
+            "呕吐",
+            "吐了",
+            "一直吐",
+            "干呕",
+            "反复呕吐",
+        ],
+    },
+    "joint_pain": {
+        "label": "关节痛",
+        "file": SKILLS_DIR / "joint-pain" / "SKILL.md",
+        "keywords": [
+            "关节痛",
+            "膝盖痛",
+            "手指关节痛",
+            "关节酸痛",
+            "关节肿痛",
+        ],
+    },
+    "waist_pain": {
+        "label": "腰痛",
+        "file": SKILLS_DIR / "waist-pain" / "SKILL.md",
+        "keywords": [
+            "腰痛",
+            "腰疼",
+            "腰酸",
+            "腰部疼痛",
+            "弯腰就痛",
+        ],
+    },
+    "back_pain": {
+        "label": "背痛",
+        "file": SKILLS_DIR / "back-pain" / "SKILL.md",
+        "keywords": [
+            "背痛",
+            "后背痛",
+            "背部疼",
+            "背酸痛",
+            "上背痛",
+        ],
+    },
+    "leg_pain": {
+        "label": "腿痛",
+        "file": SKILLS_DIR / "leg-pain" / "SKILL.md",
+        "keywords": [
+            "腿痛",
+            "腿疼",
+            "小腿痛",
+            "大腿痛",
+            "腿酸痛",
+        ],
+    },
+    "fever": {
+        "label": "发烧",
+        "file": SKILLS_DIR / "fever" / "SKILL.md",
+        "keywords": [
+            "发烧",
+            "发热",
+            "体温高",
+            "低烧",
+            "高烧",
+        ],
+    },
+    "fatigue": {
+        "label": "疲劳",
+        "file": SKILLS_DIR / "fatigue" / "SKILL.md",
+        "keywords": [
+            "疲劳",
+            "乏力",
+            "没精神",
+            "很累",
+            "总是疲惫",
+        ],
+    },
+    "acne": {
+        "label": "痤疮",
+        "file": SKILLS_DIR / "acne" / "SKILL.md",
+        "keywords": [
+            "痤疮",
+            "青春痘",
+            "长痘",
+            "粉刺",
+            "脸上起痘",
+        ],
+    },
+    "weight_gain": {
+        "label": "体重增加",
+        "file": SKILLS_DIR / "weight-gain" / "SKILL.md",
+        "keywords": [
+            "体重增加",
+            "长胖",
+            "体重上涨",
+            "最近胖了",
+            "增重",
         ],
     },
 }
@@ -148,6 +348,7 @@ def detect_skill_key(user_text: str) -> str | None:
     for skill_key, route in SKILL_ROUTES.items():
         for keyword in route["keywords"]:
             if keyword.lower() in text:
+                print_info(f"[skill_router: keyword_hit] {keyword}")
                 return skill_key
     return None
 

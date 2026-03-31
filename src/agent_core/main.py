@@ -262,7 +262,7 @@ def agent_loop() -> None:
         if not detected_skill:
             detected_skill = detect_skill_key_by_metadata(user_input)
             if detected_skill:
-                print_info(f"[skill_meta_hit] {detected_skill}")
+                print_info(f"[skill_meta: NLP_hit] {detected_skill}")
         if detected_skill and detected_skill != active_skill_key:
             skill_prompt = load_skill_prompt(detected_skill)
             if skill_prompt:

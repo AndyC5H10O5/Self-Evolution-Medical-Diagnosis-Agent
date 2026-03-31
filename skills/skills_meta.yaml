@@ -1,11 +1,10 @@
 skills:
   - skill_key: abdominal_pain
     name: abdominal-pain
-    label: 肚子疼
+    label: 肚子痛
     path: skills/abdominal-pain/SKILL.md
     use_when: >
-      当患者主诉腹部或胃部疼痛、不适，或描述疼痛位置、疼痛性质、腹泻便秘等消化道相关症状时使用。
-      尤其适合需要判断腹痛部位、伴随症状与急诊风险信号的场景。
+      当患者描述肚子痛、腹部绞痛、胃部疼痛，或伴随消化道不适时使用。
     evolvable_fields: []
 
   - skill_key: headache
@@ -13,8 +12,7 @@ skills:
     label: 头痛
     path: skills/headache/SKILL.md
     use_when: >
-      当患者主诉头部疼痛、头胀、头沉、偏头痛，或伴随畏光、恶心、呕吐等神经系统相关不适时使用。
-      适合识别头痛诱因、严重程度与危险信号。
+      当患者主诉头痛、头胀、偏头痛，或伴随畏光恶心等头部相关症状时使用。
     evolvable_fields:
       - 头痛部位
       - 头痛性质
@@ -25,6 +23,149 @@ skills:
     label: 恶心
     path: skills/nausea/SKILL.md
     use_when: >
-      当患者主诉恶心、反胃、呕吐，或出现进食相关不适、脱水迹象时使用。
-      适合判断是否存在消化道感染、脱水风险或需要紧急处理的红旗症状。
+      当患者主诉恶心、反胃、干呕，或出现想吐、进食后不适等上消化道不适时使用。
+    evolvable_fields: []
+
+  - skill_key: insomnia
+    name: insomnia
+    label: 失眠
+    path: skills/insomnia/SKILL.md
+    use_when: >
+      当患者描述难以入睡、频繁夜醒、早醒或睡眠质量差时使用。
+    evolvable_fields: []
+
+  - skill_key: tinnitus
+    name: tinnitus
+    label: 耳鸣
+    path: skills/tinnitus/SKILL.md
+    use_when: >
+      当患者描述耳朵嗡鸣、耳内响声、耳鸣伴听力变化时使用。
+    evolvable_fields: []
+
+  - skill_key: eye_pain
+    name: eye-pain
+    label: 眼痛
+    path: skills/eye-pain/SKILL.md
+    use_when: >
+      当患者主诉眼部疼痛、眼球刺痛、眼红畏光或视力不适时使用。
+    evolvable_fields: []
+
+  - skill_key: runny_nose
+    name: runny-nose
+    label: 流鼻涕
+    path: skills/runny-nose/SKILL.md
+    use_when: >
+      当患者主诉流鼻涕、鼻塞、打喷嚏，需区分感染与过敏时使用。
+    evolvable_fields: []
+
+  - skill_key: chest_pain
+    name: chest-pain
+    label: 胸痛
+    path: skills/chest-pain/SKILL.md
+    use_when: >
+      当患者描述胸口疼痛、胸闷痛、压榨样不适，需排查急症风险时使用。
+    evolvable_fields: []
+
+  - skill_key: heart_pain
+    name: heart-pain
+    label: 心痛
+    path: skills/heart-pain/SKILL.md
+    use_when: >
+      当患者描述心前区疼痛、心口发紧或疑似心脏相关不适时使用。
+    evolvable_fields: []
+
+  - skill_key: sore_throat
+    name: sore-throat
+    label: 喉咙痛
+    path: skills/sore-throat/SKILL.md
+    use_when: >
+      当患者出现咽痛、吞咽痛、嗓子痛等上呼吸道不适时使用。
+    evolvable_fields: []
+
+  - skill_key: cough
+    name: cough
+    label: 咳嗽
+    path: skills/cough/SKILL.md
+    use_when: >
+      当患者持续咳嗽、干咳或咳痰，需要评估呼吸道症状时使用。
+    evolvable_fields: []
+
+  - skill_key: diarrhea
+    name: diarrhea
+    label: 腹泻
+    path: skills/diarrhea/SKILL.md
+    use_when: >
+      当患者主诉腹泻、拉肚子、大便稀水样并需评估脱水风险时使用。
+    evolvable_fields: []
+
+  - skill_key: vomiting
+    name: vomiting
+    label: 呕吐
+    path: skills/vomiting/SKILL.md
+    use_when: >
+      当患者主诉反复呕吐、干呕、进食后呕吐或无法进食饮水时使用。
+    evolvable_fields: []
+
+  - skill_key: joint_pain
+    name: joint-pain
+    label: 关节痛
+    path: skills/joint-pain/SKILL.md
+    use_when: >
+      当患者主诉膝、肘、手指等关节疼痛，伴肿胀或活动受限时使用。
+    evolvable_fields: []
+
+  - skill_key: waist_pain
+    name: waist-pain
+    label: 腰痛
+    path: skills/waist-pain/SKILL.md
+    use_when: >
+      当患者主诉腰部疼痛、弯腰加重、久坐后酸痛或下肢放射痛时使用。
+    evolvable_fields: []
+
+  - skill_key: back_pain
+    name: back-pain
+    label: 背痛
+    path: skills/back-pain/SKILL.md
+    use_when: >
+      当患者主诉后背或背部疼痛、肌肉紧张、活动受限时使用。
+    evolvable_fields: []
+
+  - skill_key: leg_pain
+    name: leg-pain
+    label: 腿痛
+    path: skills/leg-pain/SKILL.md
+    use_when: >
+      当患者主诉单侧或双侧腿痛、酸痛、肿痛或走路受限时使用。
+    evolvable_fields: []
+
+  - skill_key: fever
+    name: fever
+    label: 发烧
+    path: skills/fever/SKILL.md
+    use_when: >
+      当患者主诉发热、体温升高、反复发烧并伴感染症状时使用。
+    evolvable_fields: []
+
+  - skill_key: fatigue
+    name: fatigue
+    label: 疲劳
+    path: skills/fatigue/SKILL.md
+    use_when: >
+      当患者长期乏力、精力下降、疲惫影响日常状态时使用。
+    evolvable_fields: []
+
+  - skill_key: acne
+    name: acne
+    label: 痤疮
+    path: skills/acne/SKILL.md
+    use_when: >
+      当患者主诉长痘、粉刺、炎性丘疹脓疱反复发作时使用。
+    evolvable_fields: []
+
+  - skill_key: weight_gain
+    name: weight-gain
+    label: 体重增加
+    path: skills/weight-gain/SKILL.md
+    use_when: >
+      当患者在短期或持续阶段出现体重上升、增重明显并关注代谢问题时使用。
     evolvable_fields: []
