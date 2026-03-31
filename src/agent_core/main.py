@@ -26,9 +26,6 @@ from utils.console import DIM, RESET, YELLOW, colored_prompt, print_assistant, p
 #   1. 收集用户输入, 追加到 messages
 #   2. 调用 API
 #   3. 检查 stop_reason 决定下一步
-#
-#   本节 stop_reason 永远是 "end_turn" (没有工具).
-#   下一节加入 "tool_use" -- 循环结构保持不变.
 # ---------------------------------------------------------------------------
 
 
@@ -187,7 +184,6 @@ def agent_loop() -> None:
     active_skill_prompt = ""
 
     print_info("=" * 60)
-    print_info("  claw0  |  Agent 循环 + Tool Use")
     print_info(f"  Model: {MODEL_ID}")
     print_info(f"  Tools: {', '.join(TOOL_HANDLERS.keys())}")
     print_info("  输入 'quit' 或 'exit' 退出. Ctrl+C 同样有效.")
