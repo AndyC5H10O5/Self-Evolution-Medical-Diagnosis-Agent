@@ -11,6 +11,7 @@ if str(SRC_ROOT) not in sys.path:
 
 from config.settings import CHAT_COMPLETIONS_URL, DEEPSEEK_API_KEY, MODEL_ID
 from config.sys_prompts import SYSTEM_PROMPT
+from agent_core.skill_router import detect_skill_key, get_skill_label, load_skill_prompt
 from tools import TOOL_HANDLERS, TOOLS
 from utils.console import DIM, RESET, YELLOW, colored_prompt, print_assistant, print_info
 
@@ -64,6 +65,8 @@ def agent_loop() -> None:
 
     messages: list[dict[str, Any]] = []
     openai_tools = _to_openai_tools(TOOLS)
+    active_skill_key: str | None = None
+    active_skill_prompt = ""
 
     print_info("=" * 60)
     print_info("  claw0  |  Agent 循环 + Tool Use")
@@ -94,10 +97,27 @@ def agent_loop() -> None:
             "content": user_input,
         })
 
+        # --- 症状路由: 根据患者描述加载对应 skill ---
+        detected_skill = detect_skill_key(user_input)
+        if detected_skill and detected_skill != active_skill_key:
+            skill_prompt = load_skill_prompt(detected_skill)
+            if skill_prompt:
+                active_skill_key = detected_skill
+                active_skill_prompt = skill_prompt
+                print_info(f"[skill_loaded] {get_skill_label(detected_skill)}")
+
         while True:
             # --- 调用 LLM ---
             try:
-                payload_messages = [{"role": "system", "content": SYSTEM_PROMPT}] + messages
+                system_prompt = SYSTEM_PROMPT
+                if active_skill_prompt:
+                    system_prompt = (
+                        f"{SYSTEM_PROMPT.strip()}\n\n"
+                        f"## 已激活症状专项 Skill: {get_skill_label(active_skill_key or '')}\n"
+                        f"{active_skill_prompt}"
+                    )
+
+                payload_messages = [{"role": "system", "content": system_prompt}] + messages
                 response = httpx.post(
                     CHAT_COMPLETIONS_URL,
                     headers={

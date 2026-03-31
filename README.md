@@ -78,13 +78,26 @@ MODEL_ID=deepseek-chat
 DEEPSEEK_BASE_URL=https://api.deepseek.com
 ```
 
-## 3) 启动主线 Agent
+## 3) 启动主线 Agent（推荐统一缓存目录）
 
 ```bash
-python src/agent_core/main.py
+powershell -ExecutionPolicy Bypass -File scripts/run_main.ps1
 ```
 
-输入 `quit` 或 `exit` 退出。
+输入 `quit` 或 `exit` 或 `ctrl+C`退出。
+
+如需在 CMD 中启动，可使用：
+
+```bash
+scripts\run_main.bat
+```
+
+若你仍想手动执行 Python 命令，请先设置：
+
+```bash
+set PYTHONPYCACHEPREFIX=.cache\pycache
+python src/agent_core/main.py
+```
 
 ## 已知限制
 
@@ -94,12 +107,6 @@ python src/agent_core/main.py
 
 ## 后续建议（按优先级）
 
-1. 将 `模仿/s02_tool_use.py` 的工具调度思路迁移到 `src/agent_core/main.py`。  
-2. 设计“诊断书”结构化格式（JSON/Markdown 模板）并新增保存工具。  
-3. 增加最小依赖文件（`requirements.txt`）和启动说明脚本。  
-4. 为关键流程补充基础测试（配置加载、API 响应解析、工具分发）。  
-
----
-
-如果你是新会话接手者：  
-先看 `src/agent_core/main.py`（主线现状），再看 `模仿/s02_tool_use.py`（下一步实现参考）。
+1. 设计“诊断书”结构化格式（JSON/Markdown 模板）并新增保存工具。  
+2. 增加最小依赖文件（`requirements.txt`）和启动说明脚本。  
+3. 为关键流程补充基础测试（配置加载、API 响应解析、工具分发）。  
