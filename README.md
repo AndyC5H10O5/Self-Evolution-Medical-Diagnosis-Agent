@@ -9,9 +9,7 @@
 - 多轮对话问诊（REPL）
 - 工具调用闭环（`tool_calls` -> 本地执行 -> `tool` 回传）
 - 本地文档保存（`save_document`）
-- Skills 混合检索：
-  - **关键词匹配**：**高价值关键词**通过硬编码快速命中（低延迟）
-  - **语义检索**：硬编码未命中时，读取 `skills/skills_meta.yaml`，即模型通过自然语言处理查看 **Skills目录**
+- Skills 混合检索
 - Skills 自进化：
   - 支持所有症状 skill 的问诊流程**动态升级**（按各自 `evolvable_fields` 生效）
   - 未覆盖回答可自动追加到对应 `skills/<skill-name>/SKILL.md` 选项中（由 `agent_core/skill_evolve.py` 执行）
@@ -45,7 +43,7 @@
 - 直接改写当前激活症状对应的 `skills/<skill-name>/SKILL.md`
 - 暂未实现版本控制与人工审核（MVP 约束）
 - 重复词条不会重复追加
-- 每次追加前会在终端显示输出 `skill_evolve_judge` 判定结果（是否追加、字段、候选项、原因）
+- 每次追加前会在终端显式输出 `skill_evolve_judge` 判定结果（是否追加、字段、候选项、原因）
 
 ## Skills 覆盖范围
 

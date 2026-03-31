@@ -20,7 +20,15 @@ from agent_core.skill_router import (
 from agent_core.skill_evolve import run_skill_evolution
 from agent_core.skill_router_NLP import detect_skill_key_by_metadata
 from tools import TOOL_HANDLERS, TOOLS
-from utils.console import DIM, RESET, YELLOW, colored_prompt, print_assistant, print_info
+from utils.console import (
+    DIM,
+    RESET,
+    YELLOW,
+    colored_prompt,
+    print_assistant,
+    print_info,
+    print_skill_evolve_judge,
+)
 
 
 def _to_openai_tools(tools: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -134,13 +142,12 @@ def agent_loop() -> None:
                 last_assistant_text=last_assistant_text,
                 evolvable_fields=evolvable_fields,
             )
-            print_info(
-                "[skill_evolve_judge] "
-                f"skill={active_skill_key}, "
-                f"should_append={evolution_decision.get('should_append')}, "
-                f"field={evolution_decision.get('field_label') or '-'}, "
-                f"new_option={evolution_decision.get('new_option') or '-'}, "
-                f"reason={evolution_decision.get('reason') or '-'}"
+            print_skill_evolve_judge(
+                skill=active_skill_key,
+                should_append=bool(evolution_decision.get("should_append")),
+                field=str(evolution_decision.get("field_label") or ""),
+                new_option=str(evolution_decision.get("new_option") or ""),
+                reason=str(evolution_decision.get("reason") or ""),
             )
             if evolution_decision.get("should_append"):
                 result = str(evolution_decision.get("append_result") or "")
