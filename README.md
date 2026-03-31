@@ -5,8 +5,9 @@
 
 - 多轮问诊对话循环（REPL）
 - 症状路由加载对应问诊 skill（肚子疼/头痛/恶心）
+- **混合检索命中 skills（核心）**：硬编码关键词优先，未命中时走 `skills_meta.yaml` + 模型语义 Top-1 回退
 - 保存问诊书
-- **skills 自进化（最小版）**：在头痛场景中，将患者新表述自动追加到 `skills/headache.md` 的问题选项中
+- **skills 自进化（最小版）**：在头痛场景中，将患者新表述自动追加到 `skills/headache/SKILL.md` 的问题选项中
 
 ## 功能概览
 
@@ -23,19 +24,27 @@
 `src/agent_core/main.py` 的运行链路：
 
 1. 读取用户输入并维护消息历史  
-2. 根据输入做症状路由，加载对应 skill（`skill_router.py`）  
-3. 在头痛场景执行最小自进化检测（判断是否出现可追加新选项）  
-4. 若模型返回 `tool_calls`，执行本地工具并将结果回传模型  
-5. 输出最终问诊回复  
+2. 症状路由：先硬编码命中，再元数据语义回退（`skill_router.py`）  
+3. 加载命中 skill 的 `SKILL.md` 作为专项提示  
+4. 在头痛场景执行最小自进化检测（判断是否出现可追加新选项）  
+5. 若模型返回 `tool_calls`，执行本地工具并将结果回传模型  
+6. 输出最终问诊回复  
 
 
-## Skills 路由
+## Skills 混合检索
 
 在 `src/agent_core/skill_router.py` 维护：
 
 - `abdominal_pain`（肚子疼）
 - `headache`（头痛）
 - `nausea`（恶心）
+
+当前检索策略（Hybrid Retrieval）：
+
+1. **硬编码命中**：每个症状维护5-6个高价值关键词，作为字串尝试匹配用户输入（低延迟）。
+2. **语义检索**：硬编码未命中时，读取 `skills/skills_meta.yaml`，即模型按 自然语言查看 **Skills目录**
+
+
 
 其中 `headache` 增加了 `evolvable_fields`：
 
@@ -48,7 +57,7 @@
 目标：提升问诊选项覆盖率。  
 机制：检测 -> 判断 -> 追加 -> 立即生效。
 
-示例（headache.md）：
+示例（`skills/headache/SKILL.md`）：
 
 - 原始：`头痛性质（搏动样/压迫样/刺痛）`
 - 患者回答：`头部沉重`
@@ -56,7 +65,7 @@
 
 说明：
 
-- 直接改写 `skills/headache.md`
+- 直接改写 `skills/headache/SKILL.md`
 - 暂未实现版本控制与人工审核（MVP 约束）
 - 重复词条不会重复追加
 
@@ -81,7 +90,7 @@
 - 安装依赖：
 
 ```bash
-pip install httpx python-dotenv
+pip install -r requirements.txt
 ```
 
 ### 2) 配置 `.env`
@@ -146,9 +155,13 @@ Consult_Medical_Agent/
 │  └─ utils/
 │     └─ console.py              # 终端输出样式
 ├─ skills/
-│  ├─ abdominal_pain.md          # 肚子疼问诊流程
-│  ├─ headache.md                # 头痛问诊流程（支持自进化）
-│  └─ nausea.md                  # 恶心问诊流程
+│  ├─ skills_meta.yaml           # skills 元数据（目录）
+│  ├─ abdominal-pain/
+│  │  └─ SKILL.md
+│  ├─ headache/
+│  │  └─ SKILL.md                # 头痛问诊流程（支持自进化）
+│  └─ nausea/
+│     └─ SKILL.md
 ├─ documents/                    # 问诊结果保存目录
 ├─ scripts/
 │  ├─ run_main.ps1               # 统一启动入口

@@ -1,3 +1,8 @@
+---
+name: headache
+description: A structured pre-consultation workflow for headache symptoms with guided options, risk triage, and document saving instructions.
+---
+
 # 头痛问诊流程 Skill
 
 你当前进入“头痛”专项预问诊流程。请遵循以下规则：

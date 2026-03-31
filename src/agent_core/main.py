@@ -12,21 +12,16 @@ if str(SRC_ROOT) not in sys.path:
 from config.settings import CHAT_COMPLETIONS_URL, DEEPSEEK_API_KEY, MODEL_ID
 from config.sys_prompts import SYSTEM_PROMPT
 from agent_core.skill_router import (
+    build_metadata_candidates,
+    build_metadata_match_prompt,
     detect_skill_key,
     get_evolvable_fields,
     get_skill_label,
     load_skill_prompt,
+    validate_metadata_selected_skill,
 )
 from tools import TOOL_HANDLERS, TOOLS
 from utils.console import DIM, RESET, YELLOW, colored_prompt, print_assistant, print_info
-
-# ---------------------------------------------------------------------------
-# 核心: Agent 循环
-# ---------------------------------------------------------------------------
-#   1. 收集用户输入, 追加到 messages
-#   2. 调用 API
-#   3. 检查 stop_reason 决定下一步
-# ---------------------------------------------------------------------------
 
 
 def _to_openai_tools(tools: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -175,6 +170,57 @@ def detect_headache_option_evolution(
     }
 
 
+def detect_skill_key_by_metadata(user_input: str) -> str | None:
+    candidates = build_metadata_candidates(user_input)
+    if not candidates:
+        return None
+
+    judge_system_prompt = (
+        "你是症状技能路由器。"
+        "请基于候选技能的 use_when，输出最匹配的单一 skill_key。"
+        "若不匹配，返回 none。仅输出 JSON。"
+    )
+    judge_user_prompt = build_metadata_match_prompt(user_text=user_input, candidates=candidates)
+
+    try:
+        response = httpx.post(
+            CHAT_COMPLETIONS_URL,
+            headers={
+                "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": MODEL_ID,
+                "messages": [
+                    {"role": "system", "content": judge_system_prompt},
+                    {"role": "user", "content": judge_user_prompt},
+                ],
+                "max_tokens": 256,
+                "temperature": 0,
+            },
+            timeout=30.0,
+        )
+        response.raise_for_status()
+        data = response.json()
+    except Exception:
+        return None
+
+    choice = (data.get("choices") or [{}])[0]
+    content = ((choice.get("message") or {}).get("content") or "").strip()
+    result = _extract_json_object(content)
+    selected_skill_key = str(result.get("skill_key") or "").strip()
+    return validate_metadata_selected_skill(selected_skill_key, candidates)
+
+
+# ---------------------------------------------------------------------------
+# 核心: Agent 循环
+# ---------------------------------------------------------------------------
+#   1. 收集用户输入, 追加到 messages
+#   2. 调用 API
+#   3. 检查 stop_reason 决定下一步
+# ---------------------------------------------------------------------------
+
+
 def agent_loop() -> None:
     """主 agent 循环 -- 带工具调用的 REPL."""
 
@@ -213,6 +259,10 @@ def agent_loop() -> None:
 
         # --- 症状路由: 根据患者描述加载对应 skill ---
         detected_skill = detect_skill_key(user_input)
+        if not detected_skill:
+            detected_skill = detect_skill_key_by_metadata(user_input)
+            if detected_skill:
+                print_info(f"[skill_meta_hit] {detected_skill}")
         if detected_skill and detected_skill != active_skill_key:
             skill_prompt = load_skill_prompt(detected_skill)
             if skill_prompt:

@@ -1,0 +1,30 @@
+skills:
+  - skill_key: abdominal_pain
+    name: abdominal-pain
+    label: 肚子疼
+    path: skills/abdominal-pain/SKILL.md
+    use_when: >
+      当患者主诉腹部或胃部疼痛、不适，或描述疼痛位置、疼痛性质、腹泻便秘等消化道相关症状时使用。
+      尤其适合需要判断腹痛部位、伴随症状与急诊风险信号的场景。
+    evolvable_fields: []
+
+  - skill_key: headache
+    name: headache
+    label: 头痛
+    path: skills/headache/SKILL.md
+    use_when: >
+      当患者主诉头部疼痛、头胀、头沉、偏头痛，或伴随畏光、恶心、呕吐等神经系统相关不适时使用。
+      适合识别头痛诱因、严重程度与危险信号。
+    evolvable_fields:
+      - 头痛部位
+      - 头痛性质
+      - 伴随症状
+
+  - skill_key: nausea
+    name: nausea
+    label: 恶心
+    path: skills/nausea/SKILL.md
+    use_when: >
+      当患者主诉恶心、反胃、呕吐，或出现进食相关不适、脱水迹象时使用。
+      适合判断是否存在消化道感染、脱水风险或需要紧急处理的红旗症状。
+    evolvable_fields: []

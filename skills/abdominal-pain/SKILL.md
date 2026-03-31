@@ -1,3 +1,8 @@
+---
+name: abdominal-pain
+description: A structured pre-consultation workflow for abdominal pain symptoms, including triage red flags and guided option-based questioning.
+---
+
 # 肚子疼问诊流程 Skill
 
 你当前进入“肚子疼（腹痛）”专项预问诊流程。请遵循以下规则：

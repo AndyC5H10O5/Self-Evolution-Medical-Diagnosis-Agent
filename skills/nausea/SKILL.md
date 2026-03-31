@@ -1,3 +1,8 @@
+---
+name: nausea
+description: A structured pre-consultation workflow for nausea-related complaints, with dehydration checks and emergency warning detection.
+---
+
 # 恶心问诊流程 Skill
 
 你当前进入“恶心”专项预问诊流程。请按以下方式问诊：
