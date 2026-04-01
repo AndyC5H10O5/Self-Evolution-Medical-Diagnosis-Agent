@@ -1,3 +1,5 @@
+from typing import Any
+
 CYAN = "\033[36m"
 GREEN = "\033[32m"
 YELLOW = "\033[33m"
@@ -18,6 +20,29 @@ def print_assistant(text: str) -> None:
 
 def print_info(text: str) -> None:
     print(f"{DIM}{text}{RESET}")
+
+
+def print_tool_call(tool_name: str, args: dict[str, Any] | None = None) -> None:
+    """
+    工具调用日志：skill_evolve 使用高亮，便于终端区分自进化与其它工具。
+    """
+    if tool_name == "skill_evolve":
+        a = args or {}
+        sk = str(a.get("skill_key", "") or "").strip()
+        fl = str(a.get("field_label", "") or "").strip()
+        opt = str(a.get("new_option", "") or "").strip()
+        head = f"{MAGENTA}{BOLD}[tool_call] skill_evolve{RESET}"
+        if sk or fl or opt:
+            detail = (
+                f" {DIM}|{RESET} skill_key={CYAN}{sk}{RESET}"
+                f" {DIM}|{RESET} field={YELLOW}{fl}{RESET}"
+                f" {DIM}|{RESET} new_option={YELLOW}{opt}{RESET}"
+            )
+            print(head + detail)
+        else:
+            print(head)
+        return
+    print_info(f"[tool_call] {tool_name}")
 
 
 def print_skill_evolve_judge(

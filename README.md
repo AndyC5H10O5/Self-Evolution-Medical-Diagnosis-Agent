@@ -141,7 +141,7 @@ Consult_Medical_Agent/
 │  └─ utils/
 │     └─ console.py              # 终端输出样式
 ├─ skills/
-│  ├─ skills_meta.yaml           # 问诊结果保存目录
+│  ├─ skills_meta.yaml           # skills目录
 │  └─ <skill-name>/SKILL.md      # 问诊流程（支持自进化）
 ├─ documents/                    # 问诊结果保存目录
 ├─ scripts/

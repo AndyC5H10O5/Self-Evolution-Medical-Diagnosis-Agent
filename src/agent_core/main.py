@@ -10,14 +10,13 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from config.settings import CHAT_COMPLETIONS_URL, DEEPSEEK_API_KEY, MODEL_ID
-from config.sys_prompts import SYSTEM_PROMPT
+from config.sys_prompts import SKILL_EVOLUTION_POLICY_TEMPLATE, SYSTEM_PROMPT
 from agent_core.skill_router import (
     detect_skill_key,
     get_evolvable_fields,
     get_skill_label,
     load_skill_prompt,
 )
-from agent_core.skill_evolve import run_skill_evolution
 from agent_core.skill_router_NLP import detect_skill_key_by_metadata
 from tools import TOOL_HANDLERS, TOOLS
 from utils.console import (
@@ -27,7 +26,7 @@ from utils.console import (
     colored_prompt,
     print_assistant,
     print_info,
-    print_skill_evolve_judge,
+    print_tool_call,
 )
 
 
@@ -62,16 +61,6 @@ def process_tool_call(tool_name: str, tool_input: dict[str, Any]) -> str:
         return f"Error: Invalid arguments for {tool_name}: {exc}"
     except Exception as exc:
         return f"Error: {tool_name} failed: {exc}"
-
-
-def _find_last_assistant_text(messages: list[dict[str, Any]]) -> str:
-    for message in reversed(messages):
-        if message.get("role") != "assistant":
-            continue
-        content = message.get("content")
-        if isinstance(content, str) and content.strip():
-            return content.strip()
-    return ""
 
 
 # ---------------------------------------------------------------------------
@@ -132,36 +121,22 @@ def agent_loop() -> None:
                 active_skill_prompt = skill_prompt
                 print_info(f"[skill_loaded] {get_skill_label(detected_skill)}.md")
 
-        # --- skills 自进化: 针对当前已命中技能的高价值问题追加新选项 ---
-        if active_skill_key:
-            evolvable_fields = get_evolvable_fields(active_skill_key)
-            last_assistant_text = _find_last_assistant_text(messages[:-1])
-            evolution_decision = run_skill_evolution(
-                skill_key=active_skill_key,
-                user_input=user_input,
-                last_assistant_text=last_assistant_text,
-                evolvable_fields=evolvable_fields,
-            )
-            print_skill_evolve_judge(
-                skill=active_skill_key,
-                should_append=bool(evolution_decision.get("should_append")),
-                field=str(evolution_decision.get("field_label") or ""),
-                new_option=str(evolution_decision.get("new_option") or ""),
-                reason=str(evolution_decision.get("reason") or ""),
-            )
-            if evolution_decision.get("should_append"):
-                result = str(evolution_decision.get("append_result") or "")
-                print_info(f"[skill_evolve] {result}")
-
         while True:
             # --- 调用 LLM ---
             try:
                 system_prompt = SYSTEM_PROMPT
                 if active_skill_prompt:
+                    evolvable_fields = get_evolvable_fields(active_skill_key or "")
+                    fields_text = ", ".join(evolvable_fields) if evolvable_fields else "（无）"
+                    evolution_policy = SKILL_EVOLUTION_POLICY_TEMPLATE.format(
+                        skill_key=active_skill_key or "",
+                        evolvable_fields=fields_text,
+                    )
                     system_prompt = (
                         f"{SYSTEM_PROMPT.strip()}\n\n"
                         f"## 已激活症状专项 Skill: {get_skill_label(active_skill_key or '')}\n"
-                        f"{active_skill_prompt}"
+                        f"{active_skill_prompt}\n\n"
+                        f"{evolution_policy.strip()}"
                     )
 
                 payload_messages = [{"role": "system", "content": system_prompt}] + messages
@@ -213,7 +188,7 @@ def agent_loop() -> None:
                     except Exception:
                         args = {}
 
-                    print_info(f"[tool_call] {tool_name}")
+                    print_tool_call(tool_name, args)
                     result = process_tool_call(tool_name, args)
 
                     messages.append({
