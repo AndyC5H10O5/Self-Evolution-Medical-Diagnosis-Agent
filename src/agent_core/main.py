@@ -10,7 +10,7 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from config.settings import CHAT_COMPLETIONS_URL, DEEPSEEK_API_KEY, MODEL_ID
-from config.sys_prompts import SKILL_EVOLUTION_POLICY_TEMPLATE, SYSTEM_PROMPT
+from config.sys_prompts import CONSULT_EVOLUTION_HANDOFF_POLICY_TEMPLATE, SYSTEM_PROMPT
 from agent_core.skill_router import (
     detect_skill_key,
     get_evolvable_fields,
@@ -18,7 +18,7 @@ from agent_core.skill_router import (
     load_skill_prompt,
 )
 from agent_core.skill_router_NLP import detect_skill_key_by_metadata
-from tools import TOOL_HANDLERS, TOOLS
+from tools import CONSULT_TOOL_HANDLERS, CONSULT_TOOLS
 from utils.console import (
     DIM,
     RESET,
@@ -51,7 +51,7 @@ def process_tool_call(tool_name: str, tool_input: dict[str, Any]) -> str:
     """
     根据工具名分发到对应处理函数.
     """
-    handler = TOOL_HANDLERS.get(tool_name)
+    handler = CONSULT_TOOL_HANDLERS.get(tool_name)
     if handler is None:
         return f"Error: Unknown tool '{tool_name}'"
 
@@ -76,13 +76,13 @@ def agent_loop() -> None:
     """主 agent 循环 -- 带工具调用的 REPL."""
 
     messages: list[dict[str, Any]] = []
-    openai_tools = _to_openai_tools(TOOLS)
+    openai_tools = _to_openai_tools(CONSULT_TOOLS)
     active_skill_key: str | None = None
     active_skill_prompt = ""
 
     print_info("=" * 60)
     print_info(f"  Model: {MODEL_ID}")
-    print_info(f"  Tools: {', '.join(TOOL_HANDLERS.keys())}")
+    print_info(f"  Tools: {', '.join(CONSULT_TOOL_HANDLERS.keys())}")
     print_info("  输入 'quit' 或 'exit' 退出. Ctrl+C 同样有效.")
     print_info("=" * 60)
     print()
@@ -128,7 +128,7 @@ def agent_loop() -> None:
                 if active_skill_prompt:
                     evolvable_fields = get_evolvable_fields(active_skill_key or "")
                     fields_text = ", ".join(evolvable_fields) if evolvable_fields else "（无）"
-                    evolution_policy = SKILL_EVOLUTION_POLICY_TEMPLATE.format(
+                    evolution_policy = CONSULT_EVOLUTION_HANDOFF_POLICY_TEMPLATE.format(
                         skill_key=active_skill_key or "",
                         evolvable_fields=fields_text,
                     )

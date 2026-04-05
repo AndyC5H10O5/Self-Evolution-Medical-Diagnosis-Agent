@@ -1,0 +1,4 @@
+sample_id,split,skill_key,last_assistant_question_field,user_turn,should_evolve_gold,gold_field_label,gold_new_option,is_existing_option_or_synonym,notes
+S0001,test,headache,头痛性质,像一跳一跳地疼,0,头痛性质,搏动样,1,已有选项同义，不应进化
+S0002,test,eye_pain,疼痛性质,触痛,1,疼痛性质,触痛,0,可进化新选项
+S0003,test,eye_pain,疼痛部位,A,0,,,1,字母选项，禁止进化

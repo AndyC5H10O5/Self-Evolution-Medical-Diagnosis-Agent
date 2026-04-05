@@ -42,6 +42,19 @@ def print_tool_call(tool_name: str, args: dict[str, Any] | None = None) -> None:
         else:
             print(head)
         return
+    if tool_name == "submit_evolution_candidate":
+        a = args or {}
+        sk = str(a.get("skill_key", "") or "").strip()
+        fl = str(a.get("field_label", "") or "").strip()
+        opt = str(a.get("candidate_option", "") or "").strip()
+        head = f"{MAGENTA}{BOLD}[tool_call] submit_evolution_candidate{RESET}"
+        detail = (
+            f" {DIM}|{RESET} skill_key={CYAN}{sk}{RESET}"
+            f" {DIM}|{RESET} field={YELLOW}{fl}{RESET}"
+            f" {DIM}|{RESET} candidate={YELLOW}{opt}{RESET}"
+        )
+        print(head + detail)
+        return
     print_info(f"[tool_call] {tool_name}")
 
 
