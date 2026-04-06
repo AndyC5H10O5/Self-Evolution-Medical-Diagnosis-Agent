@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "问诊器 agent_core",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/agent_core/main.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    {
+      "name": "进化器 evolve_core",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/evolve_core/main.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    }
+  ]
+}
