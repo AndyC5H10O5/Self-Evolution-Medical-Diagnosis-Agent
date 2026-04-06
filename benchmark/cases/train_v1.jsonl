@@ -1,0 +1,9 @@
+{"case_id":"train_h_001","skill_key":"headache","field_label":"头痛性质","user_turn":"像刀割一样疼","candidate_option":"刀割样","last_assistant_question_field":"头痛性质","gold_need_evolve":true,"gold_slot":"刀割样"}
+{"case_id":"train_h_002","skill_key":"headache","field_label":"头痛性质","user_turn":"脑袋里轰隆隆地痛","candidate_option":"轰鸣样","last_assistant_question_field":"头痛性质","gold_need_evolve":true,"gold_slot":"轰鸣样"}
+{"case_id":"train_h_003","skill_key":"headache","field_label":"头痛性质","user_turn":"就是刺痛","candidate_option":"刺痛","last_assistant_question_field":"头痛性质","gold_need_evolve":false,"gold_slot":"刺痛"}
+{"case_id":"train_v_001","skill_key":"vomiting","field_label":"呕吐性质","user_turn":"吐出来全是泡沫","candidate_option":"泡沫样","last_assistant_question_field":"呕吐性质","gold_need_evolve":true,"gold_slot":"泡沫样"}
+{"case_id":"train_v_002","skill_key":"vomiting","field_label":"呕吐性质","user_turn":"吐的是黑色颗粒样东西","candidate_option":"黑渣样","last_assistant_question_field":"呕吐性质","gold_need_evolve":true,"gold_slot":"黑渣样"}
+{"case_id":"train_v_003","skill_key":"vomiting","field_label":"呕吐性质","user_turn":"黄绿色液体","candidate_option":"黄绿色液体","last_assistant_question_field":"呕吐性质","gold_need_evolve":false,"gold_slot":"黄绿色液体"}
+{"case_id":"train_i_001","skill_key":"insomnia","field_label":"睡眠问题类型","user_turn":"整晚都是浅睡","candidate_option":"整夜浅睡","last_assistant_question_field":"睡眠问题类型","gold_need_evolve":true,"gold_slot":"整夜浅睡"}
+{"case_id":"train_i_002","skill_key":"insomnia","field_label":"睡眠问题类型","user_turn":"夜里总被惊醒","candidate_option":"夜惊醒","last_assistant_question_field":"睡眠问题类型","gold_need_evolve":true,"gold_slot":"夜惊醒"}
+{"case_id":"train_i_003","skill_key":"insomnia","field_label":"睡眠问题类型","user_turn":"多梦","candidate_option":"多梦","last_assistant_question_field":"睡眠问题类型","gold_need_evolve":false,"gold_slot":"多梦"}
