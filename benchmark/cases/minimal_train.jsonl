@@ -1,5 +1,0 @@
-{"case_id":"train_001","skill_key":"headache","field_label":"头痛性质","user_turn":"像被拽着一样疼","candidate_option":"牵拉样","last_assistant_question_field":"头痛性质","gold_need_evolve":true,"gold_slot":"牵拉样"}
-{"case_id":"train_002","skill_key":"headache","field_label":"头痛性质","user_turn":"有点发烧灼痛","candidate_option":"灼烧样","last_assistant_question_field":"头痛性质","gold_need_evolve":true,"gold_slot":"灼烧样"}
-{"case_id":"train_003","skill_key":"headache","field_label":"头痛性质","user_turn":"闷闷胀胀地痛","candidate_option":"闷胀样","last_assistant_question_field":"头痛性质","gold_need_evolve":true,"gold_slot":"闷胀样"}
-{"case_id":"train_004","skill_key":"headache","field_label":"头痛性质","user_turn":"就是刺痛","candidate_option":"刺痛","last_assistant_question_field":"头痛性质","gold_need_evolve":false,"gold_slot":"刺痛"}
-{"case_id":"train_005","skill_key":"headache","field_label":"头痛性质","user_turn":"B","candidate_option":"B","last_assistant_question_field":"头痛性质","gold_need_evolve":false,"gold_slot":"刺痛"}
