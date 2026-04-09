@@ -134,9 +134,20 @@ python src/evolve_core/main.py
 
 退出：`quit` / `exit` / `Ctrl+C`
 
-### 4) 评测脚本（暂不可用）
+### 4) Benchmark 评测（可用）
 
-Benchmark 相关脚本位于 `scripts/benchmark/`，用法见 `scripts/benchmark/README.md`。
+当前评测脚本位于 `benchmark/`，核心脚本为 `benchmark/run_benchmark.py`，用于离线评估系统在长期运行下的两项关键指标：
+
+- `Need-Evolve Recall`
+- `Slot Coverage`（基于测试集 `gold_slot` 的出现次数统计）
+
+运行方式：
+
+```bash
+python benchmark/run_benchmark.py
+```
+
+详细用法与参数说明见 `benchmark/README.md`。每次运行会在 `benchmark/runs/<timestamp>_benchmark/` 下生成 `metrics.json`、`metrics_report.md` 等评测产物。
 
 ## 项目结构
 
