@@ -16,6 +16,7 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from config.settings import MODEL_ID
+from agent_core.skill_router import get_evolvable_fields
 from evolve_core.main import _handle_candidate, _judge_with_llm
 from evolve_core.schemas import EvolutionCandidate
 from evolve_core.worker import FileQueueConsumer, QUEUE_FILE, STATE_FILE, enqueue_candidate
@@ -284,6 +285,9 @@ def run() -> None:
         if group not in group_metrics:
             continue
 
+        evolvable_fields = set(get_evolvable_fields(skill_key))
+        is_evolvable_field = field_label in evolvable_fields
+
         gold_need_evolve = _safe_bool(row.get("gold_need_evolve"))
         should_evolve = False
         judge_reason = ""
@@ -306,7 +310,8 @@ def run() -> None:
             global_tp += 1
 
         gold_slot = str(row.get("gold_slot", "")).strip()
-        if gold_slot:
+        # Coverage only counts evolvable fields.
+        if gold_slot and is_evolvable_field:
             slot = _normalize_slot(gold_slot)
             group_metrics[group]["slot_coverage"]["total_occurrence"] += 1
             global_occurrence += 1
@@ -375,7 +380,7 @@ def run() -> None:
                 "recall": global_recall,
             },
             "slot_coverage": {
-                "denominator": "test_slot_occurrence",
+                "denominator": "test_slot_occurrence_evolvable_only",
                 "total_occurrence": global_occurrence,
                 "hits_before": global_hits_before,
                 "hits_after": global_hits_after,

@@ -1,0 +1,232 @@
+{
+  "total_cases": 400,
+  "train_cases": 280,
+  "test_cases": 120,
+  "by_skill": {
+    "acne": {
+      "total": 50,
+      "source_direct_hits": 77,
+      "source_fallback_used": 0,
+      "evolvable_related": 25,
+      "non_evolvable_related": 25,
+      "positive_total": 18,
+      "field_stats": {
+        "皮损类型": {
+          "count": 9,
+          "positive": 6,
+          "negative": 3
+        },
+        "诱发因素": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        },
+        "伴随问题": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        }
+      },
+      "train_count": 35,
+      "test_count": 15
+    },
+    "cough": {
+      "total": 50,
+      "source_direct_hits": 44,
+      "source_fallback_used": 6,
+      "evolvable_related": 25,
+      "non_evolvable_related": 25,
+      "positive_total": 18,
+      "field_stats": {
+        "咳嗽类型": {
+          "count": 9,
+          "positive": 6,
+          "negative": 3
+        },
+        "痰液情况": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        },
+        "伴随症状": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        }
+      },
+      "train_count": 35,
+      "test_count": 15
+    },
+    "fatigue": {
+      "total": 50,
+      "source_direct_hits": 17,
+      "source_fallback_used": 33,
+      "evolvable_related": 25,
+      "non_evolvable_related": 25,
+      "positive_total": 18,
+      "field_stats": {
+        "睡眠状态": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        },
+        "伴随症状": {
+          "count": 9,
+          "positive": 6,
+          "negative": 3
+        },
+        "生活因素": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        }
+      },
+      "train_count": 35,
+      "test_count": 15
+    },
+    "fever": {
+      "total": 50,
+      "source_direct_hits": 91,
+      "source_fallback_used": 0,
+      "evolvable_related": 25,
+      "non_evolvable_related": 25,
+      "positive_total": 18,
+      "field_stats": {
+        "暴露风险": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        },
+        "伴随症状": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        },
+        "体温范围": {
+          "count": 9,
+          "positive": 6,
+          "negative": 3
+        }
+      },
+      "train_count": 35,
+      "test_count": 15
+    },
+    "headache": {
+      "total": 50,
+      "source_direct_hits": 17,
+      "source_fallback_used": 33,
+      "evolvable_related": 25,
+      "non_evolvable_related": 25,
+      "positive_total": 18,
+      "field_stats": {
+        "头痛部位": {
+          "count": 9,
+          "positive": 6,
+          "negative": 3
+        },
+        "头痛性质": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        },
+        "伴随症状": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        }
+      },
+      "train_count": 35,
+      "test_count": 15
+    },
+    "insomnia": {
+      "total": 50,
+      "source_direct_hits": 18,
+      "source_fallback_used": 32,
+      "evolvable_related": 25,
+      "non_evolvable_related": 25,
+      "positive_total": 18,
+      "field_stats": {
+        "白天影响": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        },
+        "睡眠问题类型": {
+          "count": 9,
+          "positive": 6,
+          "negative": 3
+        },
+        "可能诱因": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        }
+      },
+      "train_count": 35,
+      "test_count": 15
+    },
+    "tinnitus": {
+      "total": 50,
+      "source_direct_hits": 115,
+      "source_fallback_used": 0,
+      "evolvable_related": 25,
+      "non_evolvable_related": 25,
+      "positive_total": 18,
+      "field_stats": {
+        "耳鸣性质": {
+          "count": 9,
+          "positive": 6,
+          "negative": 3
+        },
+        "诱发场景": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        },
+        "伴随症状": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        }
+      },
+      "train_count": 35,
+      "test_count": 15
+    },
+    "vomiting": {
+      "total": 50,
+      "source_direct_hits": 37,
+      "source_fallback_used": 13,
+      "evolvable_related": 25,
+      "non_evolvable_related": 25,
+      "positive_total": 18,
+      "field_stats": {
+        "与进食关系": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        },
+        "呕吐性质": {
+          "count": 9,
+          "positive": 6,
+          "negative": 3
+        },
+        "伴随症状": {
+          "count": 8,
+          "positive": 6,
+          "negative": 2
+        }
+      },
+      "train_count": 35,
+      "test_count": 15
+    }
+  },
+  "validation": {
+    "total_400": true,
+    "each_skill_50": true,
+    "each_skill_evolvable_25": true,
+    "each_skill_train_35_test_15": true,
+    "each_evo_field_8_or_9": true,
+    "each_evo_field_positive_6": true
+  },
+  "validation_passed": true
+}
